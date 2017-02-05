@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>XiaoMing</title>
+    <link href="static/css/bootstrap.min.css" rel="stylesheet">
+    <link href="static/css/bootstrap-theme.min.css" rel="stylesheet">
+    <link href="static/css/app.css" rel="stylesheet">
+
+    <script src="static/js/jquery-2.1.3.min.js"></script>
+    <script src="static/js/bootstrap.min.js"></script>
+    <script src="static/js/knockout-3.4.1.js"></script>
+    <script src="static/js/knockout.mapping-latest.js"></script>
+    <script src="static/js/app.js"></script>
+</head>
+
+<body>
+    <div class="container-fluid">
+        <!--begin 导航条-->
+        <nav id="nav" class="navbar navbar-default navbar-static-top">
+            <div class="container">
+                <ul class="nav navbar-nav navbar-right">
+                    <!--ko with:user-->
+                    <!--ko if:!isLogined() -->
+                    <li><a href="#" data-bind="click:login">登录</a></li>
+                    <li><a href="#" data-bind="click:register">注册</a></li>
+                    <!--/ko -->
+                    <!--ko if:isLogined() -->
+                    <li>
+                        <p class="navbar-text">欢迎您，<span data-bind="text:name"></span>!</p>
+                    </li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">控制台 <span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <!--ko with:device-->
+                            <li><a href="#" data-bind="click:show">设备管理</a></li>
+                            <li role="separator" class="divider"></li>
+                            <!--ko foreach:devices-->
+                            <li><a href="#"><span data-bind="text:type"></span></a></li>
+                            <!--/ko-->
+                            <!--/ko-->
+                        </ul>
+                    </li>
+                    <li><a href="#" data-bind="click:loginout">退出</a></li>
+                    <!--/ko -->
+                    <!--/ko -->
+                </ul>
+            </div>
+        </nav>
+        <!--end 导航条-->
+        <div id="content" class="panel panel-default" data-bind="template: {name:type,data:data}">
+        </div>
+    </div>
+    <!--begin 设备管理-->
+    <script id="device" type="text/html">
+        <div class="panel-heading">设备管理</div>
+        <div class="panel-body">
+            <p>
+                <nav class="navbar navbar-default">
+                    <div class="container-fluid">
+                        <div class="navbar-header">
+                            <button type="button" class="btn btn-default navbar-btn navbar-left" data-bind="click:add">注册新设备</button>
+                        </div>
+                    </div>
+                </nav>
+            </p>
+        </div>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>类型</th>
+                    <th>注册时间</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!--ko foreach: devices -->
+                <tr>
+                    <th scope="row" data-bind="text:id"></th>
+                    <td data-bind="text:type"></td>
+                    <td data-bind="text:createTime"></td>
+                </tr>
+                <!--/ko-->
+            </tbody>
+        </table>
+    </script>
+    <!--end 设备管理-->
+    <!--begin 登录对话框-->
+    <div class="modal fade" id="loginDialog" tabindex="-1" role="dialog" aria-labelledby="fieldEditDialogHeader" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="fieldEditDialogHeader">登录</h4>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="form-group">
+                            <label for="fieldName" class="control-label">用户名:</label>
+                            <input type="text" class="form-control" id="fieldName" data-bind="value:userName">
+                        </div>
+                        <div class="form-group">
+                            <label for="fieldDesc" class="control-label">密码:</label>
+                            <input type="password" class="form-control" id="fieldDesc" data-bind="value:password">
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" data-bind="click:request">登录</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
